@@ -1,47 +1,9 @@
-<p align="center">
-  <img width="300" src="./public/launchpad-logo-md.png" alt="Your Image Description">
-</p>
+# Laggernaut
 
-# Launchpad
+A web performance monitoring platform that helps you track and improve your website's performance using Lighthouse.
 
-![Turborepo Badge](https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=fff&style=flat)
-![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
-![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
-![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=fff)
-![Storybook](https://img.shields.io/badge/Storybook-FF4785?logo=storybook&logoColor=fff)
-![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000?logo=shadcnui&logoColor=fff)
-![ESLint Badge](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=fff&style=flat)
-![Prettier Badge](https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=fff&style=flat)
-![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=fff)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?logo=vercel&logoColor=white)
+Monorepo using Next.js 14, Supabase, and TurboRepo with Feature-Sliced Design architecture.
 
----
-
-Welcome to **Launchpad**, a turbocharged monorepo equipped with a Next.js 14
-application, a comprehensive Storybook-hosted component library, and essential
-configuration packages for ESLint, Tailwind CSS, and TypeScript. Designed to
-streamline the development of scalable and secure web applications,
-**Launchpad** offers a robust suite of tools and a customizable UI component
-library to enhance your development workflow.
-
-- [Launchpad](#launchpad)
-  - [🚀 Getting Started](#-getting-started)
-    - [Installation](#installation)
-    - [Environment Setup](#environment-setup)
-    - [Useful Commands](#useful-commands)
-  - [📦 Apps \& Packages](#-apps--packages)
-  - [🛠 Tools Powering This Repository](#-tools-powering-this-repository)
-  - [🧑‍💻 Setting Up Supabase Locally](#-setting-up-supabase-locally)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation-1)
-    - [Configuration](#configuration)
-    - [Useful Commands](#useful-commands-1)
-  - [🧱 Components](#-components)
-  - [🔄 Versioning \& Publishing Packages](#-versioning--publishing-packages)
-    - [🔧 Generating Changesets](#-generating-changesets)
-  - [📚 Further Documentation and Resources](#-further-documentation-and-resources)
 
 ## 🚀 Getting Started
 

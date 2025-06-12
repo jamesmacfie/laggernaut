@@ -13,19 +13,7 @@ export const resetPasswordSchema: ZodType<ResetPasswordFormValues> = z
         required_error: 'Password is required.',
         invalid_type_error: 'Password is required.',
       })
-      .min(8, { message: 'Password must be at least 8 characters long.' })
-      .regex(/[a-z]/, {
-        message: 'Password must contain at least one lowercase letter.',
-      })
-      .regex(/[A-Z]/, {
-        message: 'Password must contain at least one uppercase letter.',
-      })
-      .regex(/[0-9]/, {
-        message: 'Password must contain at least one number.',
-      })
-      .regex(/[\W_]/, {
-        message: 'Password must contain at least one special character.',
-      }),
+      .min(8, { message: 'Password must be at least 8 characters long.' }),
     confirmPassword: z.string({
       required_error: 'Confirmation password is required.',
       invalid_type_error: 'Confirmation password is required.',

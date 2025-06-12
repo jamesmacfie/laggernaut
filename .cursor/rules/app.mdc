@@ -1,0 +1,119 @@
+---
+description: Outlines the coding standards and best practices for our full-stack TypeScript project. It covers everything from infrastructure and database design to frontend architecture and coding style.
+globs: 
+alwaysApply: false
+---
+# Full-Stack TypeScript Project Rules & Conventions
+
+# Infrastructure & Deployment
+- All infrastructure (Supabase, Cloud Run, Cloudflare) must be defined as code using Terraform
+- Organize Terraform into logical modules with clear input/output variables
+- Use Terraform workspaces for environment separation (dev/prod)
+- Monorepo managed by Turborepo with workspace structure: "apps/*", "packages/*", "supabase"
+- Include supabase/ directory as workspace for CLI task integration
+
+# Deployment Targets
+- Frontend: React on Cloudflare Pages
+- Backend: Supabase (database + auth + Edge Functions)
+- Workers: Google Cloud Run for heavy tasks
+- Environment variables: Use .env for local, secure storage for production
+- Never hard-code secrets, use consistent naming (e.g., SUPABASE_SERVICE_ROLE_KEY)
+
+# Database Schema & Security
+- Use snake_case for all table/column names
+- Tables as singular (user, order), columns as singular (email, created_at)
+- Primary keys named 'id', foreign keys as 'table_id' (e.g., user_id)
+- Enable Row-Level Security (RLS) on all public schema tables
+- Name RLS policies descriptively: "Users can view their own todos"
+- Use Postgres functions (RPCs) for complex operations, name as noun_verb pattern
+- Add comments to all tables/columns explaining their purpose
+
+# Backend: Supabase Edge Functions
+- Organize functions in supabase/functions/ with kebab-case names
+- Each function in own folder with index.ts entry file
+- Prefer "fat" functions over many micro-functions
+- Use supabase/functions/_shared/ for shared utilities
+- Handle multiple HTTP methods within single function
+- Write tests in supabase/tests/ named as function-name-test.ts
+- Use Supabase Cron for scheduling, Cloud Run for resource-intensive tasks
+
+# Monorepo Structure
+- Top-level: apps/, packages/, infra/, supabase/
+- Shared packages: @acme/ui, @acme/utils, @acme/types
+- Use TypeScript project references and path aliases
+- Consistent config files (ESLint, Prettier, tsconfig) across all projects
+- Maintain scripts/ directory for build/CI helpers
+
+# Frontend UI Structure
+- Feature-based organization: group by pages/features, not technical types
+- Shared components in packages/ui for reusable elements
+- Use Tailwind CSS exclusively with consistent design tokens
+- Functional components with hooks only, no class components
+- Custom hooks for reusable logic (useAuthUser, useFormField)
+- Implement error boundaries and accessibility standards
+
+# Routing (TanStack Router)
+- File-based routing mirroring URL structure
+- Use nested layouts with _layout.tsx files
+- Router loaders for page-level data, React Query for component data
+- Leverage Suspense for loading states
+- Share fetching logic between loaders and queries
+
+# API Interaction & State Management
+- TanStack Query for all async data fetching and caching
+- Custom hooks for each data operation: useUserProfile(userId)
+- Consistent query keys: ['user', userId] or ['projects', projectId, 'tasks']
+- Supabase client as singleton, never expose service_role key on client
+- Wrap common calls in abstraction functions (api.ts)
+- Use real-time subscriptions for live updates
+- Implement optimistic updates for mutations
+
+# Testing Strategy
+- Unit tests: Jest/Vitest with @testing-library/react
+- Co-locate test files with source code
+- Integration tests: Use test database or MSW for mocking
+- E2E tests: Cypress/Playwright for critical user journeys
+- TypeScript in tests, aim for >90% coverage
+- Test organization: *.test.ts naming, descriptive test names
+
+# CI/CD Workflows
+- Lint, test, build on every PR and push
+- Staging deploy on main branch merge
+- Production deploy via GitHub Releases or protected branch
+- Terraform plan/apply for infrastructure changes
+- Use GitHub Actions secrets for sensitive data
+- Rollback strategy for quick issue resolution
+
+# Coding Standards & Style
+- TypeScript strict mode enabled, treat warnings as errors
+- ESLint with recommended rulesets for TypeScript/React
+- Prettier for consistent formatting (2 spaces, 80-100 char lines)
+- camelCase for variables/functions, PascalCase for components/types
+- Descriptive naming: isLoading, hasPermission, UserSettingsForm
+- No unused variables/imports, prefer const over let/var
+- Small functions (<50 lines), single purpose
+- Avoid @ts-ignore unless absolutely necessary
+- Never use TypeScript `any` type
+  
+# File & Folder Conventions
+- kebab-case or snake_case for files/folders
+- Component files can be PascalCase (LoginForm.tsx)
+- Import order: third-party first, then internal
+- Use fragments <> instead of unnecessary divs
+- Sort Tailwind classes for readability
+
+# Documentation & Quality
+- README for each package explaining purpose and usage
+- JSDoc for complex functions
+- Self-explanatory code, comments for insight/intent
+- Accessibility linting with eslint-plugin-jsx-a11y
+- Regular convention reviews and updates
+- Consistent patterns across codebase
+
+# Key Principles
+- Consistency is key - match existing patterns
+- Type safety end-to-end
+- Security first - RLS policies, no exposed secrets
+- Performance - leverage caching, Suspense, optimistic updates
+- Maintainability - clear structure, good naming, documentation
+- Scalability - modular architecture, shared components/utilities
