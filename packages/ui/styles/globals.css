@@ -82,7 +82,7 @@
     --reefGreen-800: #27621d;
     --reefGreen-900: #14310f;
 
-    @apply font-oswald;
+    @apply font-inter;
   }
   body {
     @apply bg-background text-foreground;
