@@ -1,0 +1,20 @@
+{
+  "name": "supabase",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "status": "supabase status",
+    "start": "supabase start",
+    "stop": "supabase stop",
+    "db:reset": "supabase db reset"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "eslint": "^8.28.0",
+    "eslint-config-custom": "workspace:*",
+    "tailwindcss": "^3.3.0"
+  },
+  "dependencies": {
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

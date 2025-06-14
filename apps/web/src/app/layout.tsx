@@ -6,7 +6,7 @@ import { Toaster } from 'ui';
 import { ThemeProvider } from '../components/layouts/ThemeProvider';
 // import Script from 'next/script';
 
-const inter = Inter();
+const inter = Inter({ subsets: ['latin'] });
 
 // TODO: update the site metadata
 export const metadata: Metadata = {
