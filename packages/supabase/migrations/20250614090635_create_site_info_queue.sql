@@ -1,8 +1,30 @@
 -- Enable the pgmq extension
 CREATE EXTENSION IF NOT EXISTS pgmq;
 
+-- Grant permissions on pgmq schema sequences
+GRANT USAGE, SELECT, UPDATE
+ON ALL SEQUENCES IN SCHEMA pgmq
+TO service_role;
+
 -- Create the queue for getting site info
 SELECT pgmq.create('fetch_site_info');
+
+-- Enable RLS on queue tables
+ALTER TABLE pgmq.q_fetch_site_info ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pgmq.a_fetch_site_info ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for service role to access queue tables
+CREATE POLICY "Service role can access queue tables" ON pgmq.q_fetch_site_info
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Service role can access archive tables" ON pgmq.a_fetch_site_info
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
 
 -- Create function to handle updated_at columns
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
@@ -26,6 +48,8 @@ CREATE TABLE public.site (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.site ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX idx_site_url ON public.site(url);
 CREATE INDEX idx_site_created_by_user_id ON public.site(created_by_user_id);
@@ -52,6 +76,16 @@ CREATE TABLE public.job (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Enable RLS on job table
+ALTER TABLE public.job ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for service role to access job table
+CREATE POLICY "Service role can access job table" ON public.job
+  FOR ALL
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
 
 CREATE INDEX idx_job_msg_id ON public.job(msg_id);
 CREATE INDEX idx_job_created_by_user_id ON public.job(created_by_user_id);
