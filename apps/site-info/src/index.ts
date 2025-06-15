@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import { SiteInfo } from '@laggernaut/types';
+import { JSDOM } from 'jsdom';
 dotenv.config();
 
 const supabase = createClient(
@@ -54,15 +55,52 @@ async function processQueue() {
       return;
     }
 
+    // Check if site exists and belongs to user
+    const { data: site, error: siteError } = await supabase
+      .from('site')
+      .select('*')
+      .eq('id', message.message.site_id)
+      .eq('created_by_user_id', message.message.user_id)
+      .single();
+
+    if (siteError || !site) {
+      console.error('Site not found or unauthorized:', siteError);
+      await updateJobStatus(message.msg_id, 'error');
+      return;
+    }
+
+    // Skip if site is archived
+    if (site.state === 'inactive') {
+      console.log('Site is archived, skipping:', site.id);
+      await updateJobStatus(message.msg_id, 'complete');
+      return;
+    }
+
     await updateJobStatus(message.msg_id, 'in_progress');
 
     try {
-      // TODO: Add your site info fetching logic here
-      console.log('Message body:', message.message);
+      const response = await fetch(message.message.url);
+      const html = await response.text();
+      const dom = new JSDOM(html);
+      const title = dom.window.document.querySelector('title')?.textContent || '';
 
+      // Update site with title and set to active
+      const { error: updateError } = await supabase
+        .from('site')
+        .update({ 
+          name: title,
+          state: 'active'
+        })
+        .eq('id', message.message.site_id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      console.log('Updated site with title and set to active:', title);
       await updateJobStatus(message.msg_id, 'complete');
       
-      // And delete the message from the queue
+      // Delete the message from the queue
       await supabase.rpc('delete_message', {
         queue_name: 'fetch_site_info',
         msg_id: message.msg_id,

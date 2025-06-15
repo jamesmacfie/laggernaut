@@ -119,7 +119,7 @@ BEGIN
     site_id
   ) VALUES (
     NEW.msg_id,
-    (NEW.message->>'type')::job_type,
+    COALESCE((NEW.message->>'type')::job_type, 'site_info'),
     NEW.enqueued_at,
     NEW.vt,
     NEW.message,
