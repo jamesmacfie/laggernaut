@@ -8,6 +8,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@laggernaut/types": "workspace:*",
     "@supabase/supabase-js": "^2.39.0",
     "dotenv": "^16.3.1"
   },

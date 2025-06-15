@@ -4,7 +4,7 @@ import { getCurrentUser } from '../actions/user';
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();
-  
+
   return (
     <div className='space-y-6'>
       <div>
@@ -14,7 +14,7 @@ const SettingsPage = async () => {
         </p>
       </div>
       <Separator />
-      <UpdateUserForm user={user}/>
+      <UpdateUserForm user={user} />
     </div>
   );
 };

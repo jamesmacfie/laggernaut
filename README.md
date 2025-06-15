@@ -1,9 +1,10 @@
 # Laggernaut
 
-A web performance monitoring platform that helps you track and improve your website's performance using Lighthouse.
+A web performance monitoring platform that helps you track and improve your
+website's performance using Lighthouse.
 
-Monorepo using Next.js 14, Supabase, and TurboRepo with Feature-Sliced Design architecture.
-
+Monorepo using Next.js 14, Supabase, and TurboRepo with Feature-Sliced Design
+architecture.
 
 ## 🚀 Getting Started
 

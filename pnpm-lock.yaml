@@ -36,6 +36,9 @@ importers:
 
   apps/site-info:
     dependencies:
+      '@laggernaut/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@supabase/supabase-js':
         specifier: ^2.39.0
         version: 2.50.0
@@ -132,7 +135,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tsconfig
       typescript:
-        specifier: ^5
+        specifier: ^5.2.2
         version: 5.3.3
 
   packages/eslint-config-custom:
@@ -192,6 +195,8 @@ importers:
         version: 3.3.0(postcss@8.5.5)(ts-node@10.9.2)
 
   packages/tsconfig: {}
+
+  packages/types: {}
 
   packages/ui:
     dependencies:
