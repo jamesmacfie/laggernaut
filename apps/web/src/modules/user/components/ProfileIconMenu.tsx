@@ -11,7 +11,7 @@ import {
 } from 'ui';
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { signOut } from '../../../app/app/actions/user';
+import { signOut } from '../../../app/app/_actions/user';
 
 export const ProfileIconMenu: FC = () => {
   const { push } = useRouter();

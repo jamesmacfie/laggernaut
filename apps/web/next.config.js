@@ -12,8 +12,8 @@ module.exports = {
     typedRoutes: true,
   },
   publicRuntimeConfig: {
-    appUrl: getEnv('NEXT_APP_URL'),
-    supaBaseUrl: getEnv('SUPABASE_URL'),
-    supaKey: getEnv('SUPABASE_ANON_KEY'),
+    NEXT_APP_URL: getEnv('NEXT_APP_URL'),
+    SUPABASE_URL: getEnv('SUPABASE_URL'),
+    SUPABASE_ANON_KEY: getEnv('SUPABASE_ANON_KEY'),
   },
 };

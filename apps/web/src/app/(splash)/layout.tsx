@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 import { NavBar } from '../../components/layouts/Navbar';
 import { ThemeToggle } from '../../components/layouts/ThemeToggle';
-import { getCurrentUser } from '../app/actions/user';
+import { getCurrentUser } from '../app/_actions/user';
 
 const LandingLayout = async ({ children }: { children: ReactNode }) => {
   const user = await getCurrentUser();

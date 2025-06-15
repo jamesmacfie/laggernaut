@@ -1,6 +1,6 @@
 import { Separator } from 'ui/src/components/ui/separator';
 import { UpdateUserForm } from '../../../modules/auth/components/UpdateUserForm';
-import { getCurrentUser } from '../actions/user';
+import { getCurrentUser } from '../_actions/user';
 
 const SettingsPage = async () => {
   const user = await getCurrentUser();

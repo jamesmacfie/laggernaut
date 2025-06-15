@@ -79,6 +79,7 @@ async function processQueue() {
     await updateJobStatus(message.msg_id, 'in_progress');
 
     try {
+      console.log('Fetching site info for:', site.url);
       const response = await fetch(message.message.url);
       const html = await response.text();
       const dom = new JSDOM(html);
@@ -99,17 +100,16 @@ async function processQueue() {
 
       console.log('Updated site with title and set to active:', title);
       await updateJobStatus(message.msg_id, 'complete');
-      
-      // Delete the message from the queue
-      await supabase.rpc('delete_message', {
-        queue_name: 'fetch_site_info',
-        msg_id: message.msg_id,
-      });
-
     } catch (err) {
       console.error('Error processing message:', err);
       await updateJobStatus(message.msg_id, 'error');
     }
+
+    // Delete the message from the queue for success or error
+    await supabase.rpc('delete_message', {
+      queue_name: 'fetch_site_info',
+      msg_id: message.msg_id,
+    });
   } catch (err) {
     console.error('Error in processQueue:', err);
   }
