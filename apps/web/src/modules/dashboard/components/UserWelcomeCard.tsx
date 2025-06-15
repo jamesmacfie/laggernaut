@@ -5,7 +5,7 @@ import type { User } from '@supabase/auth-helpers-nextjs';
 import { formatDistanceToNow } from 'date-fns';
 import { BorderBeam, Card, CardContent, CardHeader, CardTitle } from 'ui';
 
-export const UserWelcomeCard: FC<{ user: User | undefined }> = ({ user }) => {
+export const UserWelcomeCard: FC<{ user: User }> = ({ user }) => {
   const userName = user?.user_metadata?.name || user?.email || 'Awesome Human';
   const accountCreatedAt = user?.created_at ? new Date(user.created_at) : null;
 

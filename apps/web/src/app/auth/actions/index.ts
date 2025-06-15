@@ -25,7 +25,12 @@ export async function signInWithEmailAndPassword(values: {
 }) {
   const supabase = await createSupabaseServerClient();
 
-  return supabase.auth.signInWithPassword(values);
+  const { data, error } = await supabase.auth.signInWithPassword(values);
+
+  return {
+    data,
+    error: error ? { message: error.message, status: error.status } : null
+  };
 }
 
 export const signInWithRecoveryToken = async (code: string) => {

@@ -57,7 +57,7 @@ const LoginWithEmailAndPasswordAuthForm: FC = () => {
               placeholder='********'
               type='password'
             />
-            <p className='text-right text-xs text-muted-foreground'>
+            <p className='text-xs text-right text-muted-foreground'>
               <Link
                 className='hover:text-brand hover:underline hover:underline-offset-4'
                 href='/auth/forgot-password'

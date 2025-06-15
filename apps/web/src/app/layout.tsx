@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 // TODO: update the site metadata
 export const metadata: Metadata = {
-  title: 'Launchpad',
-  description: 'Turbo app starter',
+  title: 'Laggernaut',
+  description: 'Laggernaut',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
