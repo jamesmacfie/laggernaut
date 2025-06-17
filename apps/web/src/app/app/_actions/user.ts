@@ -4,7 +4,7 @@ import { createClient } from '../../../../lib/supabase/server';
 import { cookies } from 'next/headers';
 
 export async function getCurrentUser() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   const {
@@ -15,7 +15,7 @@ export async function getCurrentUser() {
 }
 
 export async function signOut() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   await supabase.auth.signOut();

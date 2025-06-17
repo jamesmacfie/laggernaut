@@ -7,7 +7,7 @@ export async function signUpWithEmailAndPassword(values: {
   email: string;
   password: string;
 }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.auth.signUp({
@@ -25,7 +25,7 @@ export async function signInWithEmailAndPassword(values: {
   email: string;
   password: string;
 }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.auth.signInWithPassword(values);
@@ -39,14 +39,14 @@ export async function signInWithEmailAndPassword(values: {
 }
 
 export const signInWithRecoveryToken = async (code: string) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   return supabase.auth.exchangeCodeForSession(code);
 };
 
 export async function signInWithEmail(email: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   // signup users if not available
@@ -61,7 +61,7 @@ export async function signInWithEmail(email: string) {
 // Todo: Add loginWithGithub
 
 export async function resetPasswordForEmail(email: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   return supabase.auth.resetPasswordForEmail(email, {
@@ -70,7 +70,7 @@ export async function resetPasswordForEmail(email: string) {
 }
 
 export async function updatePassword(password: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   return supabase.auth.updateUser({

@@ -5,7 +5,7 @@ import { getCurrentUser } from './user';
 import { cookies } from 'next/headers';
 
 export async function getSites() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.from('site').select('*');
@@ -26,7 +26,7 @@ interface CreateSiteParams {
 
 export async function createSite({ url, name }: CreateSiteParams) {
   const user = await getCurrentUser();
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   if (!user) {
