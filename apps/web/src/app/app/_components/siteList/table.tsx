@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   Table,
@@ -27,72 +25,8 @@ interface Props {
 }
 
 export default function SiteTable({ initialSites }: Props) {
-  const [sites, setSites] = useState<Site[]>(initialSites);
-  const [loading, setLoading] = useState(false);
-  console.log(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
-  // const supabase = createClientComponentClient({
-  //   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  // });
-
-  useEffect(() => {
-    console.log('subscribing to sites-changes');
-    // const channel = supabase
-    //   .channel('sites-changes')
-    //   .on(
-    //     'postgres_changes',
-    //     {
-    //       event: '*',
-    //       schema: 'public',
-    //       table: 'site',
-    //     },
-    //     payload => {
-    //       console.log('payload change!', payload);
-    //       if (payload.eventType === 'INSERT') {
-    //         setSites(prev => [...prev, payload.new as Site]);
-    //       } else if (payload.eventType === 'UPDATE') {
-    //         setSites(prev =>
-    //           prev.map(site =>
-    //             site.id === payload.new.id ? (payload.new as Site) : site,
-    //           ),
-    //         );
-    //       } else if (payload.eventType === 'DELETE') {
-    //         setSites(prev => prev.filter(site => site.id !== payload.old.id));
-    //       }
-    //     },
-    //   )
-    //   .subscribe();
-
-    console.log('subscribing to sites-changes');
-
-    // const channel = supabase
-    //   .channel('sites-changes')
-    //   .on(
-    //     'postgres_changes',
-    //     {
-    //       event: 'UPDATE',
-    //       schema: 'public',
-    //     },
-    //     payload => console.log(payload),
-    //   )
-    //   .subscribe();
-
-    // return () => {
-    //   console.log('unsubscribing from sites-changes');
-    //   supabase.removeChannel(channel);
-    // };
-  }, []);
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center py-8'>
-        <Loader2 className='w-8 h-8 text-gray-500 animate-spin' />
-      </div>
-    );
-  }
+  // This was here for realtime but I cannot get it working
+  const [sites, _] = useState<Site[]>(initialSites);
 
   return (
     <Table>
