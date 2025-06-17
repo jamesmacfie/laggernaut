@@ -1,12 +1,14 @@
 'use server';
 
-import createSupabaseServerClient from '../../../../lib/supabase/server';
+import { createClient } from '../../../../lib/supabase/server';
+import { cookies } from 'next/headers';
 
 export async function signUpWithEmailAndPassword(values: {
   email: string;
   password: string;
 }) {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.auth.signUp({
     email: values.email,
@@ -23,9 +25,12 @@ export async function signInWithEmailAndPassword(values: {
   email: string;
   password: string;
 }) {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.auth.signInWithPassword(values);
+
+  console.log('signed in', data, error);
 
   return {
     data,
@@ -34,13 +39,15 @@ export async function signInWithEmailAndPassword(values: {
 }
 
 export const signInWithRecoveryToken = async (code: string) => {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   return supabase.auth.exchangeCodeForSession(code);
 };
 
 export async function signInWithEmail(email: string) {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   // signup users if not available
   return supabase.auth.signInWithOtp({
@@ -54,7 +61,8 @@ export async function signInWithEmail(email: string) {
 // Todo: Add loginWithGithub
 
 export async function resetPasswordForEmail(email: string) {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   return supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${process.env.NEXT_APP_URL!}/auth/reset-password`,
@@ -62,7 +70,8 @@ export async function resetPasswordForEmail(email: string) {
 }
 
 export async function updatePassword(password: string) {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   return supabase.auth.updateUser({
     password,

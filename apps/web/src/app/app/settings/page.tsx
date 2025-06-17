@@ -14,7 +14,7 @@ const SettingsPage = async () => {
         </p>
       </div>
       <Separator />
-      <UpdateUserForm user={user} />
+      {user ? <UpdateUserForm user={user} /> : <div>Loading user...</div>}
     </div>
   );
 };

@@ -1,11 +1,12 @@
 'use server';
 
-import createSupabaseServerClient from '../../../../lib/supabase/server';
+import { createClient } from '../../../../lib/supabase/server';
 import { getCurrentUser } from './user';
+import { cookies } from 'next/headers';
 
 export async function getSites() {
-  console.log('getSites');
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.from('site').select('*');
 
@@ -25,7 +26,8 @@ interface CreateSiteParams {
 
 export async function createSite({ url, name }: CreateSiteParams) {
   const user = await getCurrentUser();
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   if (!user) {
     throw new Error('User not authenticated');

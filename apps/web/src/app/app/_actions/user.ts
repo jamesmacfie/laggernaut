@@ -1,17 +1,22 @@
 'use server';
 
-import createSupabaseServerClient from '../../../../lib/supabase/server';
+import { createClient } from '../../../../lib/supabase/server';
+import { cookies } from 'next/headers';
 
 export async function getCurrentUser() {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
-  const { data } = await supabase.auth.getSession();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return data.session?.user;
+  return user;
 }
 
 export async function signOut() {
-  const supabase = await createSupabaseServerClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   await supabase.auth.signOut();
 }
