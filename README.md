@@ -6,8 +6,6 @@ website's performance using Lighthouse.
 ^ That's what I've pumped into a bunch of LLMs to see what it's like to try and 
 build a production grade app using mostly AI agents. I'm currently using Cursor.
 
-I shoul d keep a 
-
 Monorepo using Next.js 14, Supabase, and TurboRepo with Feature-Sliced Design
 architecture.
 
