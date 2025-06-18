@@ -56,8 +56,6 @@ export async function processPageLinksQueue() {
       .eq('created_by_user_id', message.message.user_id)
       .single();
 
-
-
     if (siteError || !site) {
       console.error('Site not found or unauthorized:', siteError);
       await updateJobStatus(msgId, 'error');
@@ -146,7 +144,27 @@ export async function processPageLinksQueue() {
       console.log(`Finished crawling. Found ${output.length} unique links for site: ${site.url}`);
       console.table(output);
       
-      // TODO: Save the found links to the 'page' table
+      if (allFoundLinks.size > 0) {
+        console.log(`Saving ${allFoundLinks.size} found links to the database...`);
+        
+        const pagesToInsert = Array.from(allFoundLinks).map(link => ({
+          site_id: site.id,
+          url: link,
+          state: 'pending' as const,
+        }));
+
+        const { error: insertError } = await supabase
+          .from('page')
+          .insert(pagesToInsert);
+
+        if (insertError) {
+          throw new Error(`Failed to save pages: ${insertError.message}`);
+        }
+
+        console.log('Successfully saved pages to the database.');
+      } else {
+        console.log('No new links to save.');
+      }
 
       await updateJobStatus(msgId, 'complete');
     } catch (err) {
