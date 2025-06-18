@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getSites } from '../../_actions/sites';
 import { Loader2 } from 'lucide-react';
 import NewSiteDialog from '../newSiteDialog';
-import { Card } from 'ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from 'ui';
 import SiteTable from './table';
 
 interface Site {
@@ -37,19 +37,26 @@ export default function SiteList() {
   }, []);
 
   return (
-    <Card>
-      <div className='flex items-center justify-between mb-6'>
-        <h2 className='text-2xl font-bold'>Sites</h2>
-        <NewSiteDialog onSiteCreated={fetchSites} />
-      </div>
-
-      {loading ? (
-        <div className='flex items-center justify-center py-8'>
-          <Loader2 className='w-8 h-8 text-gray-500 animate-spin' />
+    <Card className='@container/card w-full'>
+      <CardHeader>
+        <CardDescription>Site Management</CardDescription>
+        <div className='flex items-center justify-between'>
+          <CardTitle className='text-2xl font-semibold'>
+            {sites.length} Total Sites
+          </CardTitle>
+          <NewSiteDialog onSiteCreated={fetchSites} />
         </div>
-      ) : (
-        <SiteTable initialSites={sites} />
-      )}
+      </CardHeader>
+
+      <div className='px-6'>
+        {loading ? (
+          <div className='flex items-center justify-center py-8'>
+            <Loader2 className='w-8 h-8 text-gray-500 animate-spin' />
+          </div>
+        ) : (
+          <SiteTable initialSites={sites} />
+        )}
+      </div>
     </Card>
   );
 }
