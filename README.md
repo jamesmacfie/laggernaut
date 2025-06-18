@@ -175,6 +175,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_local_anon_key
 supabase db push
 ```
 
+### Creating a new migration
+
+```
+cd packages/supabase & supabase migration new <name>
+```
+
+
+
 This command ensures your local database schema matches your project
 requirements.
 
