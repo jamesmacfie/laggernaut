@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "db:reset": "supabase db reset",
+    "gen:types": "supabase gen types typescript --local > database.types.ts",
     "status": "supabase status",
     "start": "supabase start",
-    "stop": "supabase stop",
-    "db:reset": "supabase db reset"
+    "stop": "supabase stop"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

@@ -10,7 +10,7 @@ type JobStatus =
   | 'cancelled'
   | 'error';
 
-async function updateJobStatus(messageId: string, status: JobStatus) {
+async function updateJobStatus(messageId: number, status: JobStatus) {
   const { error } = await supabase
     .from('job')
     .update({ status })
@@ -39,13 +39,15 @@ export async function processPageLinksQueue() {
       return;
     }
 
-    const message = messages[0] as SiteInfo;
+    const message = messages[0] as unknown as SiteInfo;
     console.log('Processing page_links message:', message);
 
     if (!message.msg_id) {
       console.error('Message missing msg_id:', message);
       return;
     }
+
+    const msgId = parseInt(message.msg_id);
 
     const { data: site, error: siteError } = await supabase
       .from('site')
@@ -54,19 +56,21 @@ export async function processPageLinksQueue() {
       .eq('created_by_user_id', message.message.user_id)
       .single();
 
+
+
     if (siteError || !site) {
       console.error('Site not found or unauthorized:', siteError);
-      await updateJobStatus(message.msg_id, 'error');
+      await updateJobStatus(msgId, 'error');
       return;
     }
 
     if (site.state === 'inactive') {
       console.log('Site is inactive, skipping:', site.id);
-      await updateJobStatus(message.msg_id, 'complete');
+      await updateJobStatus(msgId, 'complete');
       return;
     }
 
-    await updateJobStatus(message.msg_id, 'in_progress');
+    await updateJobStatus(msgId, 'in_progress');
 
     try {
       console.log(`Fetching page links for: ${site.url} with scan_depth: ${site.scan_depth}`);
@@ -144,16 +148,16 @@ export async function processPageLinksQueue() {
       
       // TODO: Save the found links to the 'page' table
 
-      await updateJobStatus(message.msg_id, 'complete');
+      await updateJobStatus(msgId, 'complete');
     } catch (err) {
       console.error('Error processing message:', err);
-      await updateJobStatus(message.msg_id, 'error');
+      await updateJobStatus(msgId, 'error');
     }
 
     console.log(`Deleting message ${message.msg_id} from page_links queue.`);
     await supabase.rpc('delete_message', {
       queue_name: 'fetch_page_links',
-      msg_id: message.msg_id,
+      msg_id: msgId,
     });
   } catch (err) {
     console.error('Error in processPageLinksQueue:', err);

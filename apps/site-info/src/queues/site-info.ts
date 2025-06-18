@@ -10,7 +10,7 @@ type JobStatus =
   | 'cancelled'
   | 'error';
 
-async function updateJobStatus(messageId: string, status: JobStatus) {
+async function updateJobStatus(messageId: number, status: JobStatus) {
   const { error } = await supabase
     .from('job')
     .update({ status })
@@ -40,13 +40,15 @@ export async function processSiteInfoQueue() {
       return;
     }
 
-    const message = messages[0] as SiteInfo;
+    const message = messages[0] as unknown as SiteInfo;
     console.log('Processing message:', message);
 
     if (!message.msg_id) {
       console.error('Message missing msg_id:', message);
       return;
     }
+
+    const msgId = parseInt(message.msg_id);
 
     // Check if site exists and belongs to user
     const { data: site, error: siteError } = await supabase
@@ -58,18 +60,18 @@ export async function processSiteInfoQueue() {
 
     if (siteError || !site) {
       console.error('Site not found or unauthorized:', siteError);
-      await updateJobStatus(message.msg_id, 'error');
+      await updateJobStatus(msgId, 'error');
       return;
     }
 
     // Skip if site is archived
     if (site.state === 'inactive') {
       console.log('Site is archived, skipping:', site.id);
-      await updateJobStatus(message.msg_id, 'complete');
+      await updateJobStatus(msgId, 'complete');
       return;
     }
 
-    await updateJobStatus(message.msg_id, 'in_progress');
+    await updateJobStatus(msgId, 'in_progress');
 
     try {
       console.log('Fetching site info for:', site.url);
@@ -92,16 +94,16 @@ export async function processSiteInfoQueue() {
       }
 
       console.log('Updated site with title and set to active:', title);
-      await updateJobStatus(message.msg_id, 'complete');
+      await updateJobStatus(msgId, 'complete');
     } catch (err) {
       console.error('Error processing message:', err);
-      await updateJobStatus(message.msg_id, 'error');
+      await updateJobStatus(msgId, 'error');
     }
 
     // Delete the message from the queue for success or error
     await supabase.rpc('delete_message', {
       queue_name: 'fetch_site_info',
-      msg_id: message.msg_id,
+      msg_id: msgId,
     });
   } catch (err) {
     console.error('Error in processQueue:', err);
