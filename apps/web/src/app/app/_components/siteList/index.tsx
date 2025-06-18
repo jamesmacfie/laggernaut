@@ -40,7 +40,7 @@ export default function SiteList() {
     <Card className='@container/card w-full'>
       <CardHeader>
         <CardDescription>Site Management</CardDescription>
-        <div className='flex items-center justify-between'>
+        <div className='flex justify-between items-center'>
           <CardTitle className='text-2xl font-semibold'>
             {sites.length} Total Sites
           </CardTitle>
@@ -50,11 +50,11 @@ export default function SiteList() {
 
       <div className='px-6'>
         {loading ? (
-          <div className='flex items-center justify-center py-8'>
+          <div className='flex justify-center items-center py-8'>
             <Loader2 className='w-8 h-8 text-gray-500 animate-spin' />
           </div>
         ) : (
-          <SiteTable initialSites={sites} />
+          <SiteTable sites={sites} />
         )}
       </div>
     </Card>

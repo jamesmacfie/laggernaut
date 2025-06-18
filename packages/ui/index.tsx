@@ -17,7 +17,7 @@ export * from './src/components/ui/select';
 export * from './src/components/ui/card';
 export * from './src/components/ui/table';
 export * from './src/components/magicui/border-beam';
-
+export * from './src/components/statePill';
 export * from './src/components/ui/use-toast';
 
 export { cn } from './src/lib/utils';

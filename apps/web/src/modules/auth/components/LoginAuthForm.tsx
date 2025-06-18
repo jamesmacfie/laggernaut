@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 import { Suspense, lazy, useState } from 'react';
 import { buttonVariants, cn, Icons, Skeleton } from 'ui';
 
@@ -43,11 +43,11 @@ export const LoginAuthForm: FC = () => {
 
       <div className='flex flex-col gap-6'>
         <div className='relative'>
-          <div className='absolute inset-0 flex items-center'>
+          <div className='flex absolute inset-0 items-center'>
             <span className='w-full border-t' />
           </div>
-          <div className='relative flex justify-center text-xs uppercase'>
-            <span className='bg-background px-2 text-muted-foreground'>
+          <div className='flex relative justify-center text-xs uppercase'>
+            <span className='px-2 bg-background text-muted-foreground'>
               Or continue with
             </span>
           </div>
@@ -71,7 +71,7 @@ export const LoginAuthForm: FC = () => {
             disabled
             type='button'
           >
-            <Icons.Github className='mr-2 h-4 w-4' />
+            <Icons.Github className='mr-2 w-4 h-4' />
             Github
           </button>
         </div>

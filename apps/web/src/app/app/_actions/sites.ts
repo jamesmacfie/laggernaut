@@ -14,8 +14,28 @@ export async function getSites() {
     console.error('Error fetching sites:', error);
     return [];
   }
+  
+  return data;
+}
 
-  console.log('site data', data);
+export async function getSite(siteId: string) {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+
+  const { data, error } = await supabase
+    .from('site')
+    .select(`
+      *,
+      pages:page(*)
+    `)
+    .eq('id', siteId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching site:', error);
+    throw error;
+  }
+
   return data;
 }
 
