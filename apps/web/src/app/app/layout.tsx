@@ -10,7 +10,7 @@ const AppLayout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className='flex min-h-screen'>
-      <div className='p-4 w-64 bg-gray-900'>
+      <div className='p-4 w-64 bg-card border-r'>
         <AppSidebar user={user} />
       </div>
       <div className='flex-1'>

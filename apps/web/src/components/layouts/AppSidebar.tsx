@@ -41,8 +41,8 @@ export function AppSidebar({ className, user }: Props) {
                         group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold
                         ${
                           item.current
-                            ? 'bg-gray-800 text-white'
-                            : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                            ? 'bg-accent text-accent-foreground'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                         }
                       `}
                     >
@@ -56,7 +56,7 @@ export function AppSidebar({ className, user }: Props) {
         </nav>
       </div>
       <div className='flex flex-col gap-y-2 px-2'>
-        <div className='flex gap-x-4 items-center py-3 text-sm font-semibold leading-6 text-white'>
+        <div className='flex gap-x-4 items-center py-3 text-sm font-semibold leading-6 text-foreground'>
           <span className='sr-only'>Your profile</span>
           <span aria-hidden='true'>{user?.email}</span>
         </div>

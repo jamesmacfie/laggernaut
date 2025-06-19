@@ -1,4 +1,4 @@
-import { Card } from 'ui';
+import { Card, CardHeader, CardTitle, CardContent } from 'ui';
 import PageListTable from './table';
 
 interface Site {
@@ -23,7 +23,14 @@ interface PageListProps {
 const PageList = ({ site }: PageListProps) => {
   return (
     <Card className='w-full'>
-      <PageListTable site={site} />
+      <CardHeader>
+        <CardTitle className='text-2xl font-semibold'>
+          {site.pages?.length || 0} Total Pages
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <PageListTable site={site} />
+      </CardContent>
     </Card>
   );
 };
