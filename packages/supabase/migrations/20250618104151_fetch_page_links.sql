@@ -23,7 +23,10 @@ CREATE POLICY "Service role can access archive tables" ON pgmq.a_fetch_page_link
 
 -- Copy from queue to jobs table
 CREATE OR REPLACE FUNCTION public.copy_page_links_queue_to_jobs()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   INSERT INTO job (
     msg_id,
@@ -53,7 +56,10 @@ CREATE TRIGGER trigger_copy_page_links_to_jobs
   EXECUTE FUNCTION public.copy_page_links_queue_to_jobs();
 
 CREATE OR REPLACE FUNCTION public.queue_fetch_page_links()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   -- Only queue if state is changing from pending to active
   IF OLD.state = 'pending' AND NEW.state = 'active' THEN
@@ -71,8 +77,6 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-ALTER FUNCTION public.queue_fetch_page_links() SECURITY DEFINER;
 
 CREATE TRIGGER trigger_queue_fetch_page_links
   AFTER UPDATE ON public.site

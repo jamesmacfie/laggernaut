@@ -1,6 +1,5 @@
 import { supabase } from '../lib/supabase';
 import { launch } from 'chrome-launcher';
-import type { Result as LighthouseResult } from 'lighthouse';
 
 type JobStatus =
   | 'pending'
@@ -19,13 +18,44 @@ interface PageMetricsMessage {
 }
 
 async function updateJobStatus(messageId: number, status: JobStatus) {
-  const { error } = await supabase
+  const { data: job, error } = await supabase
     .from('job')
     .update({ status })
-    .eq('msg_id', messageId);
+    .eq('msg_id', messageId)
+    .select('id')
+    .single();
 
   if (error) {
     console.error(`Error updating job ${messageId} to ${status}:`, error);
+    return null;
+  }
+
+  return job;
+}
+
+async function savePagePerformance(metrics: any, payload: PageMetricsMessage, jobId: string) {
+  const { error } = await supabase.from('page_performance').insert({
+    site_id: payload.site_id,
+    page_id: payload.page_id,
+    created_by_job_id: jobId,
+    performance_score: metrics.performance_score,
+    first_contentful_paint: metrics.first_contentful_paint,
+    largest_contentful_paint: metrics.largest_contentful_paint,
+    total_blocking_time: metrics.total_blocking_time,
+    cumulative_layout_shift: metrics.cumulative_layout_shift,
+    speed_index: metrics.speed_index,
+    time_to_interactive: metrics.time_to_interactive,
+    accessibility_score: metrics.accessibility_score,
+    best_practices_score: metrics.best_practices_score,
+    seo_score: metrics.seo_score,
+    total_byte_weight: metrics.total_byte_weight,
+    dom_size: metrics.dom_size,
+    resource_summary: metrics.resource_summary
+  });
+
+  if (error) {
+    console.error('Error saving page performance:', error);
+    throw error;
   }
 }
 
@@ -80,11 +110,7 @@ async function runLighthouse(url: string) {
             transferSize: value?.transferSize ?? 0,
           },
         ])
-      ),
-
-      // Timestamps
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      )
     };
 
     return metrics;
@@ -130,11 +156,16 @@ export async function processPageMetricsQueue() {
     }
 
     const msgId = parseInt(message.msg_id.toString());
-    await updateJobStatus(msgId, 'in_progress');
+    const job = await updateJobStatus(msgId, 'in_progress');
 
     try {
       const metrics = await runLighthouse(payload.url);
       console.log('Metrics:', metrics);
+      
+      if (job?.id) {
+        await savePagePerformance(metrics, payload, job.id);
+      }
+      
       await updateJobStatus(msgId, 'complete');
     } catch (err) {
       console.error('Error processing message:', err);

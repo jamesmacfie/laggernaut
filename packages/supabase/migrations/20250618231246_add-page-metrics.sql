@@ -28,7 +28,10 @@ ADD COLUMN metrics_updated_at TIMESTAMPTZ;
 
 -- Create function to queue page metrics
 CREATE OR REPLACE FUNCTION public.queue_fetch_page_metrics()
-RETURNS TRIGGER AS $$
+  RETURNS TRIGGER 
+  SECURITY DEFINER
+  SET search_path = public
+AS $$
 DECLARE
   site_user_id UUID;
 BEGIN
@@ -52,8 +55,6 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-ALTER FUNCTION public.queue_fetch_page_metrics() SECURITY DEFINER;
 
 -- Create trigger to queue page metrics on page creation
 CREATE TRIGGER trigger_queue_fetch_page_metrics

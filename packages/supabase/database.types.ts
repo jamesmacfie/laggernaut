@@ -118,8 +118,6 @@ export type Database = {
           thumbnail_url: string | null
           updated_at: string | null
           url: string
-          metrics: Json | null
-          metrics_updated_at: string | null
         }
         Insert: {
           created_at?: string | null
@@ -130,8 +128,6 @@ export type Database = {
           thumbnail_url?: string | null
           updated_at?: string | null
           url: string
-          metrics?: Json | null
-          metrics_updated_at?: string | null
         }
         Update: {
           created_at?: string | null
@@ -142,12 +138,98 @@ export type Database = {
           thumbnail_url?: string | null
           updated_at?: string | null
           url?: string
-          metrics?: Json | null
-          metrics_updated_at?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "page_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "site"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      page_performance: {
+        Row: {
+          accessibility_score: number
+          best_practices_score: number
+          created_at: string
+          created_by_job_id: string | null
+          cumulative_layout_shift: number
+          dom_size: number
+          first_contentful_paint: number
+          id: string
+          largest_contentful_paint: number
+          page_id: string
+          performance_score: number
+          resource_summary: Json
+          seo_score: number
+          site_id: string
+          speed_index: number
+          time_to_interactive: number
+          total_blocking_time: number
+          total_byte_weight: number
+          updated_at: string
+        }
+        Insert: {
+          accessibility_score: number
+          best_practices_score: number
+          created_at?: string
+          created_by_job_id?: string | null
+          cumulative_layout_shift: number
+          dom_size: number
+          first_contentful_paint: number
+          id?: string
+          largest_contentful_paint: number
+          page_id: string
+          performance_score: number
+          resource_summary?: Json
+          seo_score: number
+          site_id: string
+          speed_index: number
+          time_to_interactive: number
+          total_blocking_time: number
+          total_byte_weight: number
+          updated_at?: string
+        }
+        Update: {
+          accessibility_score?: number
+          best_practices_score?: number
+          created_at?: string
+          created_by_job_id?: string | null
+          cumulative_layout_shift?: number
+          dom_size?: number
+          first_contentful_paint?: number
+          id?: string
+          largest_contentful_paint?: number
+          page_id?: string
+          performance_score?: number
+          resource_summary?: Json
+          seo_score?: number
+          site_id?: string
+          speed_index?: number
+          time_to_interactive?: number
+          total_blocking_time?: number
+          total_byte_weight?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_performance_created_by_job_id_fkey"
+            columns: ["created_by_job_id"]
+            isOneToOne: false
+            referencedRelation: "job"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "page_performance_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "page"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "page_performance_site_id_fkey"
             columns: ["site_id"]
             isOneToOne: false
             referencedRelation: "site"
@@ -244,7 +326,7 @@ export type Database = {
         | "cancelling"
         | "cancelled"
         | "error"
-      job_type: "site_info" | "page_links"
+      job_type: "site_info" | "page_links" | "page_performance"
       page_state: "pending" | "active" | "inactive"
       site_state: "pending" | "active" | "inactive"
     }
@@ -792,7 +874,7 @@ export const Constants = {
         "cancelled",
         "error",
       ],
-      job_type: ["site_info", "page_links"],
+      job_type: ["site_info", "page_links", "page_performance"],
       page_state: ["pending", "active", "inactive"],
       site_state: ["pending", "active", "inactive"],
     },
