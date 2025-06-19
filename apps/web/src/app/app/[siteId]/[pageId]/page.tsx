@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { getSite } from '../../_actions/sites';
-import { getLatestPagePerformance } from './_actions/performanceData';
+import { getLatestPagePerformance } from './_actions/pagePerformance';
 import { Skeleton } from 'ui';
 import PerformanceStats from './_components/performanceStats';
 import { notFound } from 'next/navigation';
