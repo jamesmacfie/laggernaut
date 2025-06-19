@@ -11,6 +11,7 @@ import {
   StatePill,
 } from 'ui';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface Site {
   id: string;
@@ -60,6 +61,7 @@ const PageListTable = ({ site }: PageListTableProps) => {
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -82,11 +84,21 @@ const PageListTable = ({ site }: PageListTableProps) => {
               <TableCell>
                 {new Date(page.created_at).toLocaleDateString()}
               </TableCell>
+              <TableCell>
+                <Link
+                  href={{
+                    pathname: `/app/${site.id}/${page.id}`,
+                  }}
+                  className='text-sm text-blue-600 hover:underline'
+                >
+                  View Performance
+                </Link>
+              </TableCell>
             </TableRow>
           ))}
           {filteredPages.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} className='text-center'>
+              <TableCell colSpan={5} className='text-center'>
                 No pages found
               </TableCell>
             </TableRow>
